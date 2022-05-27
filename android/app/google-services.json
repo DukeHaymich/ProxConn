@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1036410813586",
+    "project_id": "bk-prox-conn",
+    "storage_bucket": "bk-prox-conn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036410813586:android:c28d2ea225270779a03a4b",
+        "android_client_info": {
+          "package_name": "com.proxconn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036410813586-5o3dnahscrt086891sdc6an6625oof9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU76fk3BoBFiW2JbcK8C_PFJp-AvXwD2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036410813586-5o3dnahscrt086891sdc6an6625oof9j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
