@@ -16,7 +16,7 @@ export default function Account() {
                 <TouchableOpacity
                     activeOpacity={0.8}
                 >
-                    <Text>Sign out</Text>
+                    <Text>Sign out UUUUU</Text>
                 </TouchableOpacity>
             </SafeAreaView>
         </TouchableWithoutFeedback>

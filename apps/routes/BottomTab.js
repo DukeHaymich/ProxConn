@@ -9,7 +9,9 @@ const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{
+            headerShown: false
+        }}>
             <Tab.Screen
                 name="ContactStack"
                 component={ContactStack}
