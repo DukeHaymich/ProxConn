@@ -6,6 +6,7 @@ import {
     Text,
     TouchableWithoutFeedback,
 } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default function Contact() {
     return (
