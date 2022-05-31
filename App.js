@@ -7,6 +7,14 @@ import Routes from './apps/routes/Routes';
 
 
 export default function App() {
+    setCustomText({
+        style: {
+            fontSize: 16,
+            fontFamily: 'Roboto',
+            color: 'black',
+        }
+    });
+
     return (
         <Routes/>
         // <Toast
