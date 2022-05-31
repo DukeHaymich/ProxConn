@@ -14,7 +14,11 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const data=[{chatUser:"Typn",ava:""},{chatUser:"Mr. Dut",ava:"https://stonegatesl.com/wp-content/uploads/2021/01/avatar.jpg"},{chatUser:"Mephisto",ava:""}]
+const data=[
+  {chatUser:"Typn",ava:""},
+  {chatUser:"Mr. Dut",ava:"https://stonegatesl.com/wp-content/uploads/2021/01/avatar.jpg"},
+  {chatUser:"Mephisto",ava:""}
+];
 
 function AvatarContact(props){
     
