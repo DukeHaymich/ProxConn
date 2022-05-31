@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Contact from '../screens/Contact';
+import Contact from '../screens/Contact/Contact';
 
 const stack = createNativeStackNavigator();
 

@@ -1,4 +1,3 @@
-// export const CAP-
 
 const initialState = {
     id: 'abcXYZ',

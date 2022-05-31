@@ -4,20 +4,14 @@ import {
     SafeAreaView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native';
 
-export default function Account() {
+export default function Settings() {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={styles.screen}>
-                <Text>Account</Text>
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                >
-                    <Text>Sign out UUUUU</Text>
-                </TouchableOpacity>
+                <Text>Setting</Text>
             </SafeAreaView>
         </TouchableWithoutFeedback>
     )
