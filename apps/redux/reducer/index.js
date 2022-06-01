@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
 
+import userProfile from './userProfileReducer';
+
 const reducers = combineReducers({
+    userProfile: userProfile,
     // add reducer here
 });
 
