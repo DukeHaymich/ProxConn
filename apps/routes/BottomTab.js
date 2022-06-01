@@ -9,7 +9,7 @@ import * as Animatable from 'react-native-animatable';
 import ContactStack from './ContactStack';
 import ProximityStack from './ProximityStack';
 import AccountStack from './AccountStack';
-import { colors } from '../script/color';
+import { colors } from '../scripts/color';
 // import { NavigationRouteContext } from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
 // const Tab = createMaterialBottomTabNavigator();
@@ -19,7 +19,7 @@ const TabList = [
     { route: 'ProximityStack', label: 'Proximity', icon: 'compass', component: ProximityStack},
     { route: 'AccountStack', label: 'Profile', icon: 'user', component: AccountStack},
 ];
-const zoomIn = {0: {scale: .5, translateY: 9},.92:{translateY: -25}, 1: {scale: 1.5, translateY: -15}};
+const zoomIn = {0: {scale: .5, translateY: 9}, .92:{translateY: -25}, 1: {scale: 1.5, translateY: -15}};
 const zoomOut = {0: {scale: 1.5, translateY: -15}, 1: {scale: 1, translateY: 9}};
 const btnBGIn = {0: {scale: .5, translateY: 0}, 1: {scale: 2.2, translateY: 9}};
 const btnBGOut = {0: {scale: 2.2, translateY: 9}, 1: {scale: 1, translateY: 0}};
