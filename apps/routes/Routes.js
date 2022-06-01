@@ -5,6 +5,8 @@ import auth from '@react-native-firebase/auth';
 import AuthStack from './AuthStack';
 import BottomTab from './BottomTab';
 
+import AuthProvider from '../stores/AuthProvider';
+import DatabaseProvider from '../stores/DatabaseProvider';
 
 export default function Routes() {
     // const [initializing, setInitializing] = useState(true);
@@ -27,9 +29,13 @@ export default function Routes() {
     // if (initializing) return null;
 
     return (
+        <AuthProvider>
+        <DatabaseProvider>
         <NavigationContainer>
             {/* <AuthStack/> */}
             <BottomTab/>
         </NavigationContainer>
+        </DatabaseProvider>
+        </AuthProvider>
     )
 }
