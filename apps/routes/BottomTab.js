@@ -26,7 +26,6 @@ const btnBGOut = {0: {scale: 2.2, translateY: 9}, 1: {scale: 1, translateY: 0}};
 
 const TabButton = (props) => {
     const {item, onPress, accessibilityState} = props;
-    console.log(props);
     const isFocused = accessibilityState.selected;
     const viewRef = useRef(null);
     const btnBGRef = useRef(null);
