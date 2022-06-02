@@ -1,8 +1,9 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 // import publicIP from 'react-native-public-ip';
 // import DeviceInfo from 'react-native-device-info';
-import firestore from '@react-native-firebase/firestore';
-import { AuthContext } from './AuthProvider';
+// import firestore from '@react-native-firebase/firestore';
+// import { AuthContext } from './AuthProvider';
+import { db } from './firebase';
 
 /**
  * Structured of firestore is: collection->documents->collection->documents->....
