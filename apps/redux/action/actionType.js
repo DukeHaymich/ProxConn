@@ -4,4 +4,4 @@ export const SET_USERBIO = "SET_USERBIO";
 
 // authentication session
 export const SET_USERTOKEN = "SET_USERTOKEN";
-export const SET_SUBSCRIBER = "SER_SUBSCRIBER"
+export const SET_WARNING = "SET_WARNING"

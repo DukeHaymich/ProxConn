@@ -11,7 +11,7 @@ import {
     View,
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { login } from '../../redux/action/authSession';
 
@@ -22,9 +22,9 @@ export default function SignIn({ navigation }) {
     const [password, setPassword] = useState("");
     const [hidePassword, setHidePassword] = useState(true);
     const [icon, setIcon] = useState('eye');
-    const [warningText, setWarningText] = useState("");
     
     const dispatch = useDispatch();
+    const authSession = useSelector((state) => state.authSession);
 
     function togglePassword() {
         setHidePassword(!hidePassword);
@@ -36,7 +36,7 @@ export default function SignIn({ navigation }) {
     }
 
     function onSignUp() {
-        navigation.push('SignUp');
+        navigation.navigate('SignUp');
     }
 
     return (
@@ -85,7 +85,7 @@ export default function SignIn({ navigation }) {
                 </View>
                 <Text style={styles.forgotPassword}>Forgot password?</Text>
                 <Text style={styles.warningText} numberOfLines={2}>
-                    {warningText}
+                    {authSession.warning}
                 </Text>
                 <View style={styles.authControl}>
                     <TouchableOpacity
@@ -139,6 +139,10 @@ const styles = StyleSheet.create({
         fontFamily: 'PaytoneOne-Regular',
         alignSelf: 'center',
     },
+    formField: {
+        marginHorizontal: 50,
+        marginBottom: 10,
+    },
     label: {
         fontSize: 18,
         fontWeight: '700',
@@ -156,10 +160,6 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingLeft: 5,
         alignSelf: 'center',
-    },
-    formField: {
-        marginHorizontal: 50,
-        marginBottom: 10,
     },
     togglePassword: {
         width: 55,
@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginHorizontal: 50,
         fontSize: 17,
+        marginTop: 30,
     },
     authControl: {
         flex: 1,

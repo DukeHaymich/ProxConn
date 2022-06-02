@@ -3,7 +3,7 @@ import * as actionType from "../action/actionType";
 
 const initialState = {
     userToken: null,
-    subscriber: null,
+    warning: null,
 }
 
 export default function authSessionReducer(state = initialState, action) {
@@ -14,10 +14,10 @@ export default function authSessionReducer(state = initialState, action) {
                 userToken: action.payload.userToken,
             }
         }
-        case actionType.SET_SUBSCRIBER: {
+        case actionType.SET_WARNING: {
             return {
                 ...state,
-                subscriber: action.payload.subscriber,
+                warning: action.payload.warning,
             }
         }
         default: {

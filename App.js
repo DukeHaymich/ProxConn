@@ -9,13 +9,13 @@ import store from './apps/redux/store';
 
 
 export default function App() {
-    setCustomText({
-        style: {
-            fontSize: 16,
-            fontFamily: 'Roboto',
-            color: 'black',
-        }
-    });
+  setCustomText({
+    style: {
+      fontSize: 16,
+      fontFamily: 'Roboto',
+      color: 'black',
+    },
+  });
 
     return (
         <Provider store={store}>

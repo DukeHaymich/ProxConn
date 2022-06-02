@@ -12,8 +12,27 @@ export function setToken(token) {
     }
 }
 
+export function setWarning(text) {
+    return async function (dispatch) {
+        dispatch({
+            type: actionType.SET_WARNING,
+            payload: {
+                warning: text,
+            }
+        });
+    }
+}
+
 export function login(email, password) {
     return async function (dispatch) {
+        if (email === "") {
+            dispatch(setWarning("Email cannot be blank!"));
+            return;
+        }
+        if (password === "") {
+            dispatch(setWarning("Password cannot be blank!"));
+            return;
+        }
         try {
             // Async call to server to retrieve data
             await auth().signInWithEmailAndPassword(email, password);
@@ -24,21 +43,25 @@ export function login(email, password) {
             //         userToken: userToken,
             //     }
             // });
-            console.log('login success');
+            dispatch(setWarning(""));
+            // console.log('login success');
         } catch (err) {
-            // switch (true) {
-            //     case err.message.includes('invalid-email'):
-            //         return 'invalid-email';
-            //     case err.message.includes('user-not-found'):
-            //     case err.message.includes('wrong-password'):
-            //         return 'bad-identity';
-            //     case err.message.includes('network-request-failed'):
-            //         return 'network-issue';
-            //     default:
-            //         console.log(err)
-            //         return 'unhandled-exception';
-            // }
-            console.log(err)
+            switch (true) {
+                case err.message.includes('invalid-email'):
+                    dispatch(setWarning("Invalid email format!"));
+                    break;
+                case err.message.includes('user-not-found'):
+                case err.message.includes('wrong-password'):
+                    dispatch(setWarning("The email/password combination is not found!"));
+                    break;
+                case err.message.includes('network-request-failed'):
+                    dispatch(setWarning("Failed to connect to server (network issue)!"));
+                    break;
+                default:
+                    console.log(err)
+                    dispatch(setWarning("Unhandled exception! Contact developers for details."));
+            }
+            // console.log(err)
         }
     }
 }
@@ -48,6 +71,7 @@ export function register(email, password) {
         try {
             await auth().createUserWithEmailAndPassword(email, password);
             // console.log('register success');
+            dispatch(setWarning(""));
         } catch (err) {
             console.log(err);
         }
