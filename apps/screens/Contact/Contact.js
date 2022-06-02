@@ -1,6 +1,6 @@
 import { ListItem,Avatar } from '@rneui/base';
 import { TouchableHighlight } from "react-native";
-import React from 'react';
+import React, { useEffect,useContext } from 'react';
 import {
     Keyboard,
     SafeAreaView,
@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { AuthContext } from '../../stores/AuthProvider';
 
 const data=[{chatUser:"Typn",ava:""},{chatUser:"Mr. Dut",ava:"https://stonegatesl.com/wp-content/uploads/2021/01/avatar.jpg"},{chatUser:"Mephisto",ava:""}]
 
@@ -71,6 +73,16 @@ function ContactItem(props) {
 
 
 export default function Contact() {
+    ctx=useContext(AuthContext);
+    useEffect(()=>
+    {
+      if (ctx.user==null){
+        ctx.login('admin@gmail.com','123456').then(()=>{
+         console.log(ctx.user);
+        });
+      }
+    }
+      ,[])
     return (
             
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
