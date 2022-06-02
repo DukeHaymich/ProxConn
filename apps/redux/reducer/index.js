@@ -1,4 +1,6 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
+
+import keyboardFlag from './keyboardReducer';
 
 import userProfile from './userProfileReducer';
 import authSession from './authSessionReducer';
@@ -10,4 +12,3 @@ const reducers = combineReducers({
 });
 
 export default (state, action) => reducers(state, action);
-
