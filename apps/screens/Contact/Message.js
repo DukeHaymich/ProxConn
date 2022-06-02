@@ -27,6 +27,7 @@ export default function Message({time, isLeft, message, guestIcon, guestName}) {
       };
     }
   };
+  let timeLog = new Date(time);
   return (
     <View
       style={[
@@ -66,7 +67,9 @@ export default function Message({time, isLeft, message, guestIcon, guestName}) {
           <Text style={[styles.message, isOnLeft('message')]}>{message}</Text>
         </View>
         <View style={styles.timeView}>
-          <Text style={[styles.time, isOnLeft('time')]}>{time}</Text>
+          <Text style={[styles.time, isOnLeft('time')]}>
+            {timeLog.toLocaleTimeString()}
+          </Text>
         </View>
       </View>
     </View>
