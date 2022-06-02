@@ -32,8 +32,8 @@ export default function Routes() {
         <AuthProvider>
         <DatabaseProvider>
         <NavigationContainer>
-            {/* <AuthStack/> */}
-            <BottomTab/>
+            <AuthStack/>
+            {/* <BottomTab/> */}
         </NavigationContainer>
         </DatabaseProvider>
         </AuthProvider>
