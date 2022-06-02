@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Image,
     ImageBackground,
@@ -15,6 +15,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import * as userProfile from '../../redux/action/userProfile';
 import { logout } from '../../redux/action/authSession';
@@ -49,8 +50,12 @@ function Divider() {
 }
 
 export default function Account({ navigation }) {
-    const wallpaperSource = require('../../assets/images/wallpaper.png');
-    const avatarSource = require('../../assets/images/avatar.png');
+    const [wallpaperSource, setWallpaperSource] = useState({
+        uri: '../../assets/images/wallpaper.png'
+    });
+    const [avatarSource, setAvatarSource] = useState({
+        uri: '../../assets/images/avatar.png'
+    });
 
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userProfile);
@@ -65,6 +70,29 @@ export default function Account({ navigation }) {
             text2: 'ID is copied to clipboard!',
             position: 'top',
         })
+    }
+
+    function wallpaperPicker() {
+        launchCamera({ saveToPhotos: true, }, response => {
+            if (response.errorMessage) {
+                console.log('Image error ' + response.errorMessage);
+            } else {
+                console.log("Image " + response.uri);
+                setWallpaperSource(response.uri)
+            }
+        })
+    }
+
+    function avatarPicker() {
+        launchCamera({ saveToPhotos: true, }, response => {
+            if (response.errorMessage) {
+                console.log('Image error ' + response.errorMessage);
+            } else {
+                console.log("Image " + response.uri);
+                setAvatarSource(response.uri)
+            }
+        }
+        )
     }
 
     function goToSetting() {
@@ -91,10 +119,33 @@ export default function Account({ navigation }) {
                             </View>
                         </LinearGradient>
                     </ImageBackground>
-                    <Image
-                        style={styles.avatar}
-                        source={avatarSource}
+                    <FontAwesome5
+                        name='camera'
+                        size={28}
+                        color='#6100FF'
+                        style={styles.wallpaperPicker}
+                        onPress={wallpaperPicker}
                     />
+                    <View style={styles.avatarContainer}>
+                        <ImageBackground
+                            resizeMode={'cover'}
+                            source={require('../../assets/images/defaultAvatar.png')}
+                            style={styles.avatar}
+                            imageStyle={{ borderRadius: 100 }}
+                        >
+                            <Image
+                                style={{ width: '100%', height: '100%', borderRadius: 100 }}
+                                source={avatarSource}
+                            />
+                        </ImageBackground>
+                        <FontAwesome5
+                            name='camera'
+                            size={28}
+                            color='#6100FF'
+                            style={styles.avatarPicker}
+                            onPress={avatarPicker}
+                        />
+                    </View>
                     {/* ID & Name */}
                     <Text style={styles.idLabel} onPress ={copyID}>
                         ID:{id}
@@ -149,22 +200,49 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 200,
     },
-    avatar: {
+    wallpaperPicker: {
+        position: 'absolute',
+        top: 150,
+        right: 0,
+        width: 50,
+        height: 50,
+        borderTopLeftRadius: 100,
+        borderTopRightRadius: 100,
+        backgroundColor: '#FFF',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+    },
+    avatarContainer: {
         width: 120,
+        position: 'absolute',
+        alignSelf: 'center',
+        top: 150,
+    },
+    avatar: {
+        width: '100%',
         height: undefined,
         aspectRatio: 1,
         borderRadius: 100,
         borderWidth: 5,
-        borderColor: 'white',
+        borderColor: '#E5E5E5',
+    },
+    avatarPicker: {
         position: 'absolute',
-        alignSelf: 'center',
-        top: 150,
+        alignSelf: 'flex-end',
+        top: 70,
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        backgroundColor: '#E5E5E5',
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
     idLabel: {
         color: '#055D9C',
         textDecorationLine: 'underline',
         left: 30,
         top: 40,
+        alignSelf: 'flex-start',
     },
     nameLabel: {
         fontSize: 24,
