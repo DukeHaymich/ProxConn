@@ -13,39 +13,28 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch, useSelector } from 'react-redux';
+
+import * as userProfile from '../../redux/action/userProfile';
+import { logout } from '../../redux/action/authSession';
 
 
-function Option({ onPress, title, icon, iconColor, iconBackgroundColor, solid }){
+function Option({ onPress, title, icon, iconColor, iconBackgroundColor }){
     return (
         <TouchableOpacity
             activeOpacity={0.7}
             onPress={onPress ?? (() => {})}
-            style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: 25,
-            }}
+            style={styles.optionContainer}
         >
-            <View style={{
-                backgroundColor: iconBackgroundColor,
-                width: 56,
-                height: 56,
-                borderRadius: 100,
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
+            <View style={[styles.iconContainer, { backgroundColor: iconBackgroundColor }]}>
                 <FontAwesome5
                     name={icon}
                     color={iconColor ?? '#FFF'}
-                    solid
                     size={32}
+                    solid
                 />
             </View>
-            <Text style={{
-                fontWeight: '500',
-                fontSize: 22,
-                marginLeft: 25,
-            }}>
+            <Text style={styles.optionLabel}>
                 {title}
             </Text>
         </TouchableOpacity>
@@ -62,8 +51,10 @@ export default function Account({ navigation }) {
     const wallpaperSource = require('../../assets/images/wallpaper.png');
     const avatarSource = require('../../assets/images/avatar.png');
 
-    const id = 'xVQ5zz0';
-    const name = 'Sơn Đại Gia';
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userProfile);
+    const id = userInfo.id;
+    const name = userInfo.name;
 
     function copyID() {
         Clipboard.setString(id);
@@ -71,7 +62,11 @@ export default function Account({ navigation }) {
 
     function goToSetting() {
         navigation.navigate('Account_setting')
-    }    
+    }
+
+    function signOut() {
+        dispatch(logout());
+    }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -102,7 +97,7 @@ export default function Account({ navigation }) {
                     </Text>
                 </View>
                 {/* Setting's view */}
-                <View style={[ {flex: 5}, styles.optionContainer ]}>
+                <View style={[ {flex: 5}, styles.optionSection ]}>
                     <Option
                         title='Account settings'
                         icon='id-badge'
@@ -130,6 +125,7 @@ export default function Account({ navigation }) {
                         icon='sign-out-alt'
                         iconBackgroundColor='#FF2222'
                         iconColor='#FFF'
+                        onPress={signOut}
                     />
                 </View>
             </SafeAreaView>
@@ -170,15 +166,34 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: 50,
     },
-    optionContainer: {
+    optionSection: {
         backgroundColor: '#F0F0F0',
         borderRadius: 20,
-        margin: 30,
+        marginHorizontal: 30,
         marginTop: 40,
+        marginBottom: 50,
         justifyContent: 'space-evenly',
     },
     optionDivider: {
         borderColor: '#E0E0E0',
-        borderWidth: StyleSheet.hairlineWidth,
+        borderWidth: 1,
+    },
+    // styles for option element
+    optionContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 25,
+    },
+    iconContainer: {
+        width: 56,
+        height: 56,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    optionLabel: {
+        fontWeight: '500',
+        fontSize: 22,
+        marginLeft: 25,
     },
 })
