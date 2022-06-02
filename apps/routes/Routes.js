@@ -28,8 +28,8 @@ export default function Routes() {
 
     return (
         <NavigationContainer>
-            {/* <AuthStack/> */}
-            <BottomTab/>
+            <AuthStack/>
+            {/* <BottomTab/> */}
         </NavigationContainer>
     )
 }
