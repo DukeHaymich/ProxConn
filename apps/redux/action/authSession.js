@@ -24,7 +24,7 @@ export function login(email, password) {
             //         userToken: userToken,
             //     }
             // });
-            // console.log('login success');
+            console.log('login success');
         } catch (err) {
             // switch (true) {
             //     case err.message.includes('invalid-email'):
