@@ -36,12 +36,27 @@ export default function DatabaseProvider({ children }) {
     const [curRoomUser, setCurRoomUser] = useState(null);
     const [curRoom, setCurRoom] = useState(null);
     const [roomMessages, setRoomMessages] = useState([]);
+    const [userList, setUserList]= useState([]);
 
     const authSession = useSelector((state) => state.authSession)
     const userId = authSession.userToken?.uid;
-  
+    useEffect(()=>{
+        firestore().collection('users').onSnapshot(querySnapshot => {
+            const tmp=[];
+            querySnapshot.forEach(documentSnapshot => {
+                tmp.push({
+                    ...documentSnapshot.data(),
+                    userID: documentSnapshot.id
+                });
+            });
+            console.log(tmp);
+            setUserList(tmp);
+      });
+    },[]);
+
     useEffect(() => {
         if (userId==undefined || userId == null) return;
+        
         // console.log(userId);
         const userDB = firestore().collection('users').doc(userId);
 
@@ -97,12 +112,15 @@ export default function DatabaseProvider({ children }) {
     }, [curRoomUser,userId]);
 
         
-    function pushMessageHandler(mess) {
+    async function pushMessageHandler(mess) {
         if (curRoom==null || userId==null) return;
         const chatSessRef = curRoomUser['roomRef'];
         const newMessRef = curRoomUser['roomID'].collection('messages').doc();
-        
         const batch = firestore().batch();
+        curRoom.people.forEach(x=>{
+            const id = searchForPeople(x)[0].userID;
+            console.log(id);
+        })
         batch.update(chatSessRef,{'lastMess':mess.content,'lastActive':mess.time});
         batch.set(newMessRef,{'content':mess.content,'time':mess.time,'sender':userData.username});
 
@@ -115,21 +133,31 @@ export default function DatabaseProvider({ children }) {
         if (type!='direct'){
             listId.forEach((v)=>{
                 batch.set(firestore().collection('users').doc(v).collections('chatSess').doc(name),{
-                    roomID:roomID
+                    roomID:roomID,
+                    lastActive:Date.now(),
+                    lastMess:'Nhấn để bắt đầu'
                 });
             })
         }
         else {
             batch.set(firestore().collection('users').doc(v).collections('chatSess').doc(listId[1]),{
-                roomID:roomID
+                roomID:roomID,
+                lastActive:Date.now(),
+                lastMess:'Nhấn để bắt đầu'
             });
             batch.set(firestore().collection('users').doc(v).collections('chatSess').doc(listId[0]),{
-                roomID:roomID
+                roomID:roomID,
+                lastActive:Date.now(),
+                lastMess:'Nhấn để bắt đầu'
             });
         }
-        batch.set(roomID,{ids:listId,type:type});
+        batch.set(roomID,{people:listId,type:type});
 
         return batch.commit();
+    }
+
+    function searchForPeople(name){
+        return userList.map((x)=>x.username.includes(name));
     }
 
     const context = {
@@ -140,8 +168,8 @@ export default function DatabaseProvider({ children }) {
         curRoomUser: curRoomUser,
         setCurRoomUser: setCurRoomUser,
         pushMessage: pushMessageHandler,
-        addChatRoom: addChatRoomHandler
-        
+        addChatRoom: addChatRoomHandler,
+        searchForPeople: searchForPeople
     }
     return (
         <DatabaseContext.Provider

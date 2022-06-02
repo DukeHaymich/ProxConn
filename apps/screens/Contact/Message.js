@@ -27,6 +27,8 @@ export default function Message({time, isLeft, message, guestIcon, guestName}) {
       };
     }
   };
+  let timeLog = new Date(time);
+
   return (
     <View
       style={[
@@ -66,7 +68,7 @@ export default function Message({time, isLeft, message, guestIcon, guestName}) {
           <Text style={[styles.message, isOnLeft('message')]}>{message}</Text>
         </View>
         <View style={styles.timeView}>
-          <Text style={[styles.time, isOnLeft('time')]}>{time}</Text>
+          <Text style={[styles.time, isOnLeft('time')]}>{timeLog.toLocaleTimeString().substring(0, 5)}</Text>
         </View>
       </View>
     </View>
@@ -75,7 +77,7 @@ export default function Message({time, isLeft, message, guestIcon, guestName}) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     marginVertical: 5,
   },
   messageContainer: {
@@ -89,13 +91,16 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 10,
     // alignItems: 'flex-end',
+    justifyContent: 'space-between'
   },
   messageView: {
     backgroundColor: 'transparent',
-    maxWidth: '80%',
+    maxWidth: '100%',
+    // backgroundColor: 'yellow',
   },
   message: {
     color: 'white',
+    maxWidth: '100%',
     alignSelf: 'flex-start',
     fontSize: 15,
   },
@@ -103,6 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'flex-end',
     paddingLeft: 10,
+    // backgroundColor: 'red',
+    alignSelf: 'center'
   },
   time: {
     color: 'lightgray',

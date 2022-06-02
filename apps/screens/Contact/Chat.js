@@ -141,9 +141,9 @@ function Footer() {
             flex: 1,
           }}
           />
-        <TouchableOpacity onPress={() => {
+        {(message.trim() !== '') ? <TouchableOpacity onPress={() => {
           // console.log(message);
-          dbCtx.pushMessage({content:message,time:Date.now()});
+          dbCtx.pushMessage({content:message.trim(),time:Date.now()});
           setMessage("");
         }}>
           <MaterialCommunityIcons
@@ -153,7 +153,7 @@ function Footer() {
             style={styles.iconButton}
             solid
           />
-        </TouchableOpacity>
+        </TouchableOpacity> : null}
       </View>
       <View
         style={{
