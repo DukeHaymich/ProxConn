@@ -34,6 +34,7 @@ function Header({navigation}) {
   //     navigation.pop();
   // }
   // const dispatch = useDispatch();
+  const dbCtx = useContext(DatabaseContext);
   return (
     <View style={styles.headerContainer}>
       <View style={styles.searchBar}>
@@ -51,6 +52,9 @@ function Header({navigation}) {
           // onChangeText={(value) => setUsername(value)}
           // blurOnSubmit={false}
           // ref={refInputSearch}
+          onChangeText={(value)=>{
+            console.log(dbCtx.searchForPeople(value));
+          }}
           style={{
             fontSize: 16,
             padding: 2,
@@ -68,6 +72,7 @@ function Header({navigation}) {
           color="#6100FF"
           size={32}
           style={styles.iconButton}
+          solid
         />
       </TouchableOpacity>
     </View>
@@ -103,6 +108,7 @@ function ContactItem(props) {
   //     + "  " + time.toLocaleTimeString();
   const dbCtx = useContext(DatabaseContext);
   const navigation = props.navigation;
+  let timeLog = new Date(props.lastActive);
   return (
     <ListItem
       Component={TouchableHighlight}
@@ -120,11 +126,11 @@ function ContactItem(props) {
         <ListItem.Content style={styles.userContent}>
           <ListItem.Content style={styles.userText}>
             <Text style={styles.userName}>{props.roomName}</Text>
-            <Text style={styles.postTime}> 4 mins ago </Text>
+            <Text style={styles.postTime}>{timeLog.toLocaleTimeString().substring(0,5)}</Text>
           </ListItem.Content>
           <ListItem.Content style={styles.messageText}>
             <Text>
-              You: okay thay 
+              {props.lastMess}
             </Text>
           </ListItem.Content>
         </ListItem.Content>

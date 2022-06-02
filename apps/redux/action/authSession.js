@@ -66,10 +66,14 @@ export function login(email, password) {
     }
 }
 
-export function register(email, password) {
+import firestore from '@react-native-firebase/firestore';
+
+export function register(email, password, name) {
     return async function (dispatch) {
         try {
-            await auth().createUserWithEmailAndPassword(email, password);
+            const userCred=await auth().createUserWithEmailAndPassword(email, password);
+            // firestore().collection('users').set(,)
+            
             // console.log('register success');
             dispatch(setWarning(""));
         } catch (err) {

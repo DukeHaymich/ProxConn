@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 import * as userProfile from '../../redux/action/userProfile';
 import { logout } from '../../redux/action/authSession';
@@ -58,6 +59,12 @@ export default function Account({ navigation }) {
 
     function copyID() {
         Clipboard.setString(id);
+        Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: 'ID is copied to clipboard!',
+            position: 'top',
+        })
     }
 
     function goToSetting() {

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {colors} from '../../scripts/color'
 
 function Header({navigation}) {
   // function goBack() {
@@ -38,6 +39,7 @@ export default function AddNewMessage({navigation}) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.screen}>
         <Header navigation={navigation} />
+        <View style={styles.searchBar}></View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -69,4 +71,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
   },
+  searchBar:{
+    flex: 1,
+    backgroundColor: colors.primary,
+    height: 115,
+  }
 });

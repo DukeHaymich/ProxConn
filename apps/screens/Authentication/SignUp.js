@@ -34,7 +34,7 @@ export default function SignUp({ navigation }) {
     const authSession = useSelector((state) => state.authSession);
 
     function onSignUp() {
-        dispatch(register(email, password));
+        dispatch(register(email, password, username));
     }
     function onSignIn() {
         navigation.navigate('SignIn');
