@@ -195,8 +195,9 @@ function SettingPassword() {
 }
 
 function SettingBio() {
-    const personalBio = "";
-    const [bio, setBio] = useState(personalBio);
+    const userProfile = useSelector((state) => state.userProfile);
+    const dispatch = useDispatch();
+    const [bio, setBio] = useState(userProfile.bio);
     const [editable, setEditable] = useState(false);
     const [active, setActive] = useState(null);
     const inputRef = useRef(null);
@@ -206,9 +207,11 @@ function SettingBio() {
     }
     function onSave() {
         setEditable(false);
+        dispatch(setBio(bio));
     }
     function onDiscard() {
         setEditable(false);
+        setBio(userProfile.bio);
     }
 
     useEffect(() => {
