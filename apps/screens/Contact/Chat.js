@@ -146,8 +146,10 @@ function Footer() {
 
 function MessageList() {
   return (
-    <ScrollView>
-      <Text>haha</Text>
+    <ScrollView style={{flexDirection: 'column'}}>
+      <Text style={{height: 300, backgroundColor: 'red'}}>haha</Text>
+      <Text style={{height: 300, backgroundColor: 'red'}}>huhu</Text>
+      <Text style={{height: 300, backgroundColor: 'red'}}>huhu</Text>
     </ScrollView>
   );
 }
