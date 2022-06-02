@@ -3,16 +3,32 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 // import DeviceInfo from 'react-native-device-info';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from './AuthProvider';
-import { Alert } from 'react-native';
+
+/**
+ * Structured of firestore is: collection->documents->collection->documents->....
+ * 
+ * + userData(collection):
+ *     id:  - username: string
+ *          - mail: string
+ *          + chatSess(collection):
+ *              roomName: - roomID: reference
+ *                        - lastMess: string
+ *                        - lastActive: number (e.g Date.now())
+ * + rooms(collection):
+ *      roomID: - ids: array of string (username of chat rooms' member)
+ *              - type: string ('direct' or 'group')
+ *              + messages(collection):
+ *                  messID: - content: string (content of message)
+ *                          - time: number
+ *                          - sender: string (username of sender)
+ *              
+ */
+
 
 export const DatabaseContext = createContext();
-/***
- * users:
- *      -mail, name....
- *      
- */
+
 export default function DatabaseProvider({ children }) {
-    const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState(null);
     const [chatRooms, setChatRooms] = useState([]);
     const [curRoomUser, setCurRoomUser] = useState(null);
     const [curRoom, setCurRoom] = useState(null);
@@ -22,7 +38,7 @@ export default function DatabaseProvider({ children }) {
     const userId = user?.uid;
   
     useEffect(() => {
-        if (userId==null) return;
+        if (userId==undefined) return;
 
         const userDB = firestore().collection('users').doc(userId);
 
@@ -31,14 +47,14 @@ export default function DatabaseProvider({ children }) {
             setUserData(documentSnapshot.data());
         });
 
-        const subcriber2= userDB.collection('chatSess').onSnapshot(querySnapshot => {
+        const subcriber2= userDB.collection('chatSess').orderBy('lastActive','desc').limit(30).onSnapshot(querySnapshot => {
                 console.log('Total chat rooms: ', querySnapshot.size);
                 const tmp=[];
                 querySnapshot.forEach(documentSnapshot => {
                     const roomdata={...documentSnapshot.data(),roomName:documentSnapshot.id,roomRef:documentSnapshot.ref};
                     tmp.push(roomdata)
-                    setCurRoomUser(roomdata);
                 });
+                console.log('chatRooms: ', tmp);
                 setChatRooms(tmp);
           });
         return () => {
@@ -50,14 +66,14 @@ export default function DatabaseProvider({ children }) {
 
     
     useEffect(() => {
-        if (userId==null || curRoomUser==null) return;
+        if (userId==undefined || curRoomUser==null) return;
 
         const subscriber = curRoomUser['roomID'].onSnapshot(documentSnapshot => {
             console.log('Room data: ',documentSnapshot.data())
             setCurRoom(documentSnapshot.data());
         });
 
-        const subcriber2=curRoomUser['roomID'].collection('messages').onSnapshot(querySnapshot => {
+        const subcriber2=curRoomUser['roomID'].collection('messages').orderBy('lastActive','desc').limit(30).onSnapshot(querySnapshot => {
             console.log('Total message: ', querySnapshot.size);
             const tmp=[];
             querySnapshot.forEach(documentSnapshot => {
@@ -75,12 +91,13 @@ export default function DatabaseProvider({ children }) {
 
         
     function pushMessageHandler(mess) {
-        if (curRoom==null || userId==null) return;
+        if (curRoom==null || userId==undefined) return;
 
         const chatSessRef = curRoomUser['roomRef'];
         const newMessRef = curRoomUser['roomID'].collection('messages').doc();
 
         const batch = firestore().batch();
+        console.log(chatSessRef)
         batch.update(chatSessRef,{'lastMess':mess.content,'lastActive':mess.time});
         batch.set(newMessRef,{'content':mess.content,'time':mess.time,'sender':userData.username});
 
@@ -114,7 +131,9 @@ export default function DatabaseProvider({ children }) {
         userData: userData,
         roomMessages:roomMessages,
         chatRooms: chatRooms,
-        setCurRoom: setCurRoom,
+        curRoom: curRoom,
+        curRoomUser: curRoomUser,
+        setCurRoomUser: setCurRoomUser,
         pushMessage: pushMessageHandler,
         addChatRoom: addChatRoomHandler
         

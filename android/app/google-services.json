@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1036410813586",
-    "project_id": "bk-prox-conn",
-    "storage_bucket": "bk-prox-conn.appspot.com"
+    "project_number": "877279152840",
+    "project_id": "bk-prox-conn2",
+    "storage_bucket": "bk-prox-conn2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1036410813586:android:c28d2ea225270779a03a4b",
+        "mobilesdk_app_id": "1:877279152840:android:a24b1d8bd77fb5922d73fd",
         "android_client_info": {
-          "package_name": "com.proxconn"
+          "package_name": "com.typn.bkproxconn"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1036410813586-5o3dnahscrt086891sdc6an6625oof9j.apps.googleusercontent.com",
+          "client_id": "877279152840-pu7md24mj76cvu5h8to11pbi3mopf1ng.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAU76fk3BoBFiW2JbcK8C_PFJp-AvXwD2Q"
+          "current_key": "AIzaSyCa9yYgm-DkeBp3ROHNznBD1KboK3vRHvI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1036410813586-5o3dnahscrt086891sdc6an6625oof9j.apps.googleusercontent.com",
+              "client_id": "877279152840-pu7md24mj76cvu5h8to11pbi3mopf1ng.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
