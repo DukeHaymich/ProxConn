@@ -13,9 +13,10 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as userProfile from '../../redux/action/userProfile';
+import { logout } from '../../redux/action/authSession';
 
 
 function Option({ onPress, title, icon, iconColor, iconBackgroundColor }){
@@ -50,6 +51,7 @@ export default function Account({ navigation }) {
     const wallpaperSource = require('../../assets/images/wallpaper.png');
     const avatarSource = require('../../assets/images/avatar.png');
 
+    const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userProfile);
     const id = userInfo.id;
     const name = userInfo.name;
@@ -60,7 +62,11 @@ export default function Account({ navigation }) {
 
     function goToSetting() {
         navigation.navigate('Account_setting')
-    }    
+    }
+
+    function signOut() {
+        dispatch(logout());
+    }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -119,6 +125,7 @@ export default function Account({ navigation }) {
                         icon='sign-out-alt'
                         iconBackgroundColor='#FF2222'
                         iconColor='#FFF'
+                        onPress={signOut}
                     />
                 </View>
             </SafeAreaView>
