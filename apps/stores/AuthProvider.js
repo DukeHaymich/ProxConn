@@ -24,6 +24,7 @@ export default function AuthProvider({ children }) {
                         await auth().signInWithEmailAndPassword(email, password);
                         return 'OK';
                     } catch (e) {
+                        console.log(e);
                         switch (true) {
                             case e.message.includes('invalid-email'):
                                 return 'invalid-email';

@@ -69,22 +69,21 @@ export default function Contact() {
     useEffect(()=>
     {
       if (ctx.user==null){
-        ctx.login('admin@gmail.com','123456').then(()=>{
-        //  console.log(ctx.user);
-
+        ctx.login('admin@gmail.com','sadasd').then(()=>{
+         console.log(ctx.user);
         });
       }
     }
       ,[])
 
-    useEffect(()=>
-      {
-        if (chatRooms.length>0){
-          console.log('contact.js:',chatRooms);
-          ctx2.setCurRoomUser(chatRooms[0]);
-        }
-      }
-        ,[chatRooms])
+    // useEffect(()=>
+    //   {
+    //     if (chatRooms.length>0){
+    //       console.log('contact.js:',chatRooms);
+    //       ctx2.setCurRoomUser(chatRooms[0]);
+    //     }
+    //   }
+    //     ,[chatRooms])
     // useEffect(()=>
     //   {
     //     console.log(ctx2.curRoom)
