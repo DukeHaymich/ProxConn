@@ -23,6 +23,17 @@ export function setWarning(text) {
     }
 }
 
+export function setOnboarding(flag) {
+    return async function (dispatch) {
+        dispatch({
+            type: actionType.SET_ONBOARDING,
+            payload: {
+                onboarding: flag,
+            }
+        });
+    }
+}
+
 export function login(email, password) {
     return async function (dispatch) {
         if (email === "") {

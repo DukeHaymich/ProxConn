@@ -4,4 +4,5 @@ export const SET_USERBIO = "SET_USERBIO";
 
 // authentication session
 export const SET_USERTOKEN = "SET_USERTOKEN";
-export const SET_WARNING = "SET_WARNING"
+export const SET_WARNING = "SET_WARNING";
+export const SET_ONBOARDING = "SET_ONBOARDING";

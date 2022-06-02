@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import * as authSession from '../redux/action/authSession';
 
 const {width, height} = Dimensions.get('window');
 
@@ -77,6 +79,7 @@ const OnboardingScreen = ({navigation}) => {
   };
 
   const Footer = () => {
+    const dispatch = useDispatch();
     return (
       <View
         style={{
@@ -117,7 +120,7 @@ const OnboardingScreen = ({navigation}) => {
                     },
                   ]}
                   //direct to homescreen
-                onPress={() => navigation.replace('Homescreen')}>
+                onPress={() => dispatch(authSession.setOnboarding(false))}>
                 <Text style={{fontWeight: 'bold', fontSize: 15, color:COLORS.white}}>
                   GET STARTED
                 </Text>

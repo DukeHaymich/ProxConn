@@ -8,6 +8,7 @@ import BottomTab from './BottomTab';
 
 import AuthProvider from '../stores/AuthProvider';
 import DatabaseProvider from '../stores/DatabaseProvider';
+import OnboardingScreen from '../screens/Onboarding';
 
 import { setToken, subscribe } from '../redux/action/authSession';
 
@@ -39,10 +40,12 @@ export default function Routes() {
         // <AuthProvider>
         <DatabaseProvider>
         <NavigationContainer>
-            { authSession.userToken
-            ? <BottomTab/>
-            : <AuthStack/>
-            }
+            { authSession.onboarding
+            ? <OnboardingScreen/>
+            : ( authSession.userToken
+                ? <BottomTab/>
+                : <AuthStack/>
+            )}
         </NavigationContainer>
         </DatabaseProvider>
         // </AuthProvider> 

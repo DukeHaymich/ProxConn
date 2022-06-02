@@ -4,6 +4,7 @@ import * as actionType from "../action/actionType";
 const initialState = {
     userToken: null,
     warning: null,
+    onboarding: true,
 }
 
 export default function authSessionReducer(state = initialState, action) {
@@ -18,6 +19,12 @@ export default function authSessionReducer(state = initialState, action) {
             return {
                 ...state,
                 warning: action.payload.warning,
+            }
+        }
+        case actionType.SET_ONBOARDING: {
+            return {
+                ...state,
+                onboarding: action.payload.onboarding,
             }
         }
         default: {
