@@ -1,7 +1,7 @@
 import * as actionType from './actionType';
 import auth from '@react-native-firebase/auth';
 
-function setToken(token) {
+export function setToken(token) {
     return async function (dispatch) {
         dispatch({
             type: actionType.SET_USERTOKEN,
@@ -24,6 +24,7 @@ export function login(email, password) {
             //         userToken: userToken,
             //     }
             // });
+            // console.log('login success');
         } catch (err) {
             // switch (true) {
             //     case err.message.includes('invalid-email'):
@@ -37,29 +38,29 @@ export function login(email, password) {
             //         console.log(err)
             //         return 'unhandled-exception';
             // }
+            console.log(err)
         }
     }
 }
 
 export function register(email, password) {
-    
-    try {
-        await auth().createUserWithEmailAndPassword(email, password);
-        return "OK";
-    } catch (err) {
-        console.log(err);
+    return async function (dispatch) {
+        try {
+            await auth().createUserWithEmailAndPassword(email, password);
+            // console.log('register success');
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
 
 export function logout() {
-    try {
-        await auth().signOut();
-    } catch (err) {
-        console.log(err);
+    return async function (dispatch) {
+        try {
+            await auth().signOut();
+            // console.log('logout success');
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
-
-export function subscribe() {
-    return auth().onAuthStateChanged(setToken);
-}
-

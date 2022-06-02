@@ -8,14 +8,36 @@ import {
     TextInput,
     TouchableOpacity,
     TouchableWithoutFeedback,
+    View,
 } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch } from 'react-redux';
 
-export default function SignIn() {
+import { login } from '../../redux/action/authSession';
+
+
+export default function SignIn({ navigation }) {
     const passwordRef = useRef(null);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [hidePassword, setHidePassword] = useState(true);
+    const [icon, setIcon] = useState('eye');
     const [warningText, setWarningText] = useState("");
+    
+    const dispatch = useDispatch();
 
+    function togglePassword() {
+        setHidePassword(!hidePassword);
+        setIcon(hidePassword ? 'eye-slash' : 'eye');
+    }
+
+    function onSignIn() {
+        dispatch(login(email, password));
+    }
+
+    function onSignUp() {
+        navigation.push('SignUp');
+    }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -30,44 +52,62 @@ export default function SignIn() {
                         Conn
                     </Text>
                 </Text>
-                <Text style={styles.label}>Email Address</Text>
-                <TextInput
-                    value={email}
-                    onChangeText={setEmail}
-                    returnKeyType='next'
-                    onSubmitEditing={() => passwordRef.current.focus()}
-                    blurOnSubmit={false}
-                    style={styles.input}
-                />
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={true}
-                    returnKeyType='go'
-                    ref={passwordRef}
-                    style={styles.input}
-                    // onSubmitEditing={headStartLogin}
-                />
+                <View style={styles.formField}>
+                    <Text style={styles.label}>Email Address</Text>
+                    <TextInput
+                        value={email}
+                        onChangeText={setEmail}
+                        returnKeyType='next'
+                        onSubmitEditing={() => passwordRef.current.focus()}
+                        blurOnSubmit={false}
+                        style={styles.input}
+                    />
+                </View>
+                <View style={styles.formField}>
+                    <Text style={styles.label}>Password</Text>
+                    <TextInput
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={hidePassword}
+                        returnKeyType='go'
+                        ref={passwordRef}
+                        style={[ styles.input, { paddingRight: 55, } ]}
+                        // onSubmitEditing={headStartLogin}
+                    />
+                    <FontAwesome5
+                        name={icon}
+                        size={24}
+                        solid
+                        color='#000'
+                        style={styles.togglePassword}
+                        onPress={togglePassword}
+                    />
+                </View>
                 <Text style={styles.forgotPassword}>Forgot password?</Text>
-                
-                <TouchableOpacity
-                    style={styles.button}
-                    activeOpacity={0.6}
-                    // onPress={onLoginHandler}
-                    // disabled={disabledButton}
-                >
-                <Text style={styles.warning} numberOfLines={2}>
+                <Text style={styles.warningText} numberOfLines={2}>
                     {warningText}
                 </Text>
-                    <Text style={styles.labelButton}>
-                        SIGN IN
+                <View style={styles.authControl}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        activeOpacity={0.6}
+                        onPress={onSignIn}
+                        // disabled={disabledButton}
+                    >
+                        <Text style={styles.labelButton}>
+                            SIGN IN
+                        </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.signUpLabel}>
+                        Don't have an account?{" "}
+                        <Text
+                            style={styles.signUpLink}
+                            onPress={onSignUp}
+                        >
+                            Sign up!
+                        </Text>
                     </Text>
-                </TouchableOpacity>
-                <Text style={styles.signUpLabel}>
-                    Don't have an account?
-                    <Text style={styles.signUpLink}>Sign up!</Text>
-                </Text>
+                </View>
             </SafeAreaView>
         </TouchableWithoutFeedback>
     )
@@ -91,6 +131,7 @@ const styles = StyleSheet.create({
         fontFamily: 'PaytoneOne-Regular',
         alignSelf: 'center',
         top: '-2%',
+        marginBottom: '10%',
     },
     title2: {
         fontSize: 48,
@@ -99,12 +140,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     label: {
-        marginLeft: 50,
         fontSize: 18,
         fontWeight: '700',
         color: '#001AFF',
     },
-    input: { 
+    input: {
         backgroundColor: '#FFF',
         borderColor: '#777777',
         borderWidth: 1,
@@ -112,8 +152,67 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#000',
         height: 35,
+        width: '100%',
         paddingVertical: 5,
+        paddingLeft: 5,
         alignSelf: 'center',
+    },
+    formField: {
         marginHorizontal: 50,
+        marginBottom: 10,
+    },
+    togglePassword: {
+        width: 55,
+        height: 35,
+        marginTop: -35,
+        alignSelf: 'flex-end',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        // backgroundColor: 'grey',
+    },
+    forgotPassword: {
+        color: '#0C88FA',
+        fontSize: 18,
+        textDecorationLine: 'underline',
+        marginHorizontal: 50,
+    },
+    warningText: {
+        minHeight: 100,
+        color: '#F00',
+        fontStyle: 'italic',
+        fontWeight: '600',
+        marginHorizontal: 50,
+        fontSize: 17,
+    },
+    authControl: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingBottom: 50,
+    },
+    button: {
+        backgroundColor: '#6100FF',
+        height: 50,
+        marginHorizontal: 50,
+        alignContent: 'center',
+        justifyContent: 'center',
+        borderRadius: 20,
+        marginBottom: 25,
+    },
+    labelButton: {
+        color: '#FFF',
+        fontFamily: 'Nunito-Black',
+        fontSize: 24,
+        textAlign: 'center',
+    },
+    signUpLabel: {
+        fontSize: 20,
+        color: '#777777',
+        textAlign: 'center',
+    },
+    signUpLink: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#0C88FA',
+        textDecorationLine: 'underline',
     },
 })
