@@ -17,7 +17,6 @@ import React, {useState, useRef, useEffect} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {useKeyboard} from '@react-native-community/hooks';
 
 import {Avatar} from '@rneui/base';
 
@@ -167,7 +166,8 @@ function Footer() {
   );
 }
 
-function MessageList() {
+function MessageList(props) {
+  const {navigation, route} = props;
   const [messages, setMessages] = useState([
     {
       user: 1,
@@ -262,6 +262,8 @@ function MessageList() {
           time={item.time}
           isLeft={item.user !== user.current}
           message={item.content}
+          guestIcon={route.params.ava}
+          guestName={route.params.userName}
         />
       )}
       // renderSectionHeader={({ section: { title } }) => (
@@ -285,7 +287,7 @@ export default function Chat(props) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.screen}>
         <Header {...props} />
-        <MessageList />
+        <MessageList {...props} />
         <Footer />
       </SafeAreaView>
     </TouchableWithoutFeedback>
