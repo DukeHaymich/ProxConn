@@ -3,7 +3,7 @@ import {Avatar} from '@rneui/base';
 
 import React from 'react';
 
-import {colors} from '../../script/color';
+import {colors} from '../../scripts/color';
 
 export default function Message({time, isLeft, message, guestIcon, guestName}) {
   const isOnLeft = type => {

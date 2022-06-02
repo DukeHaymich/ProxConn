@@ -7,7 +7,6 @@ const initialState = {
 export default function keyboardReducer(state = initialState, payload) {
   switch (payload.type) {
     case actionType.SETFLAG: {
-      console.log(state);
       return {
         ...state,
         flag: payload.flag,

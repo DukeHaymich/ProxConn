@@ -13,14 +13,15 @@ import {
   FlatList,
   SectionList,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useContext} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import { DatabaseContext } from '../../stores/DatabaseProvider';
 
 import {Avatar} from '@rneui/base';
 
-import {colors} from '../../script/color';
+import {colors} from '../../scripts/color';
 import Message from './Message';
 // import {ScrollView} from 'react-native-gesture-handler';
 
@@ -105,6 +106,8 @@ function Header(props) {
 }
 
 function Footer() {
+  const dbCtx=useContext(DatabaseContext);
+  const [message, setMessage] = useState('');
   return (
     <View style={styles.headerContainer}>
       <TouchableOpacity onPress={() => {}}>
@@ -121,23 +124,36 @@ function Footer() {
           editable
           placeholder="Message..."
           multiline
-          // placeholderTextColor={}
-          // value={username}
-          // // returnKeyType='next'
+          // // placeholderTextColor={}
+          value={message}
+          // returnKeyType='send'
           // // autoFocus={true}
-          // // onSubmitEditing={() => {}}
+          // onSubmitEditing={() => {}}
           // onFocus={() => {navigation.setOptions({tabBarStyle: {display: 'none'}});}}
           // onBlur={onUsernameBlur}
-          // onChangeText={(value) => setUsername(value)}
+          onChangeText={(value) => (setMessage(value))}
           // blurOnSubmit={false}
-          // ref={refInputSearch}
+          // // ref={refInputSearch}
           style={{
             fontSize: 16,
             padding: 2,
             marginLeft: 5,
             flex: 1,
           }}
-        />
+          />
+        <TouchableOpacity onPress={() => {
+          // console.log(message);
+          dbCtx.pushMessage({content:message,time:Date.now()});
+          setMessage("");
+        }}>
+          <MaterialCommunityIcons
+            name="send-circle"
+            color="#6100FF"
+            size={28}
+            style={styles.iconButton}
+            solid
+          />
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -145,7 +161,8 @@ function Footer() {
           marginLeft: 10,
           alignItems: 'center',
         }}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {
+        }}>
           <Octicons
             name="image"
             color="#6100FF"
@@ -168,88 +185,8 @@ function Footer() {
 
 function MessageList(props) {
   const {navigation, route} = props;
-  const [messages, setMessages] = useState([
-    {
-      user: 1,
-      time: '4:25',
-      content: 'Hello mấy cưng222',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'Hello mấy cưng1111',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'Hello mấy cưng222',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'Hello mấy cưng',
-    },
-    {
-      user: 1,
-      time: '4:25',
-      content: 'Hello mấy cưng',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 1,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 1,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-    {
-      user: 0,
-      time: '4:25',
-      content: 'yolooo',
-    },
-  ]);
+  const dbCtx =useContext(DatabaseContext);
+  const messages = dbCtx.roomMessages;
   const user = useRef(0);
   // const scrollView = useRef();
   return (
@@ -260,7 +197,7 @@ function MessageList(props) {
         <Message
           index={index}
           time={item.time}
-          isLeft={item.user !== user.current}
+          isLeft={item.sender !== dbCtx.userData.username}
           message={item.content}
           guestIcon={route.params.ava}
           guestName={route.params.userName}
@@ -337,6 +274,7 @@ const styles = StyleSheet.create({
     height: 39,
     padding: 5,
     borderRadius: 30,
+    flexDirection: 'row'
   },
   chatContainer: {},
   message: {},

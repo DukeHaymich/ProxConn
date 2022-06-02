@@ -1,6 +1,6 @@
 import {ListItem, Avatar} from '@rneui/base';
 import {TouchableHighlight, TouchableOpacity} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useContext} from 'react';
 import {
   Keyboard,
   SafeAreaView,
@@ -16,20 +16,17 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 // import {TouchableOpacity} from 'react-native-gesture-handler';
 // import {useDispatch} from 'react-redux';
 // import {setFlag} from '../../redux/action/updateKeyboard';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import { AuthContext } from '../../stores/AuthProvider';
-import { DatabaseContext } from '../../stores/DatabaseProvider';
-
-import {colors} from '../../script/color';
+import { DatabaseContext } from '../../stores/DatabaseProvider'
+import { colors } from '../../scripts/color';
 
 const data = [
-  {chatUser: 'Typn', ava: ''},
+  {roomName: 'Typn', ava: ''},
   {
-    chatUser: 'Mr. Dut',
+    roomName: 'Mr. Dut',
     ava: 'https://stonegatesl.com/wp-content/uploads/2021/01/avatar.jpg',
   },
-  {chatUser: 'Mephisto', ava: ''},
+  {roomName: 'Mephisto', ava: ''},
 ];
 
 function Header({navigation}) {
@@ -100,86 +97,56 @@ function AvatarContact(props) {
 }
 
 function ContactItem(props) {
-    return (
-        <ListItem
-        Component={TouchableHighlight}
-        containerStyle={{}}
-        disabledStyle={{ opacity: 0.5 }}
-        onLongPress={() => console.log("onLongPress()")}
-        onPress={() => console.log("onPress()")}
-        pad={20}
-      >
-        <AvatarContact uri={props.ava} name={props.roomName}
-        />
-        <ListItem.Content>
-          <ListItem.Title style={styles.textHeader}>
-            <Text>{props.roomName}</Text>
-          </ListItem.Title>
-          <ListItem.Subtitle>
-            <Text>{(props?.lastMess!=undefined)? props?.lastMess: "Tap here to say hi"}</Text>
-            <Text>{(props?.lastActive!=undefined)? props?.lastActive: "N/A"}</Text>
-          </ListItem.Subtitle>
+  // console.log(Date.now())
+  // var time = new Date();
+  // time = time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear()
+  //     + "  " + time.toLocaleTimeString();
+  const dbCtx = useContext(DatabaseContext);
+  const navigation = props.navigation;
+  return (
+    <ListItem
+      Component={TouchableHighlight}
+      containerStyle={styles.cardContainer}
+      disabledStyle={{opacity: 0.5}}
+      onLongPress={() => console.log('onLongPress()')}
+      onPress={() =>{
+          navigation.navigate('Chat', {userName: props.roomName, ava: ''})
+          dbCtx.setCurRoomUser(props);
+        }
+      }
+      pad={20}>
+      <ListItem.Content style={styles.userInfo}>
+        <AvatarContact uri={props.ava} name={props.roomName} />
+        <ListItem.Content style={styles.userContent}>
+          <ListItem.Content style={styles.userText}>
+            <Text style={styles.userName}>{props.roomName}</Text>
+            <Text style={styles.postTime}> 4 mins ago </Text>
+          </ListItem.Content>
+          <ListItem.Content style={styles.messageText}>
+            <Text>
+              You: okay thay 
+            </Text>
+          </ListItem.Content>
         </ListItem.Content>
       </ListItem.Content>
     </ListItem>
   );
 }
 
-
-export default function Contact() {
-
-  // For testing --------------------------
-    const ctx=useContext(AuthContext);
-    const ctx2=useContext(DatabaseContext);
-    const chatRooms = ctx2.chatRooms;
-    useEffect(()=>
-    {
-      if (ctx.user==null){
-        ctx.login('admin@gmail.com','sadasd').then(()=>{
-         console.log(ctx.user);
-        });
-      }
-    }
-      ,[])
-
-    // useEffect(()=>
-    //   {
-    //     if (chatRooms.length>0){
-    //       console.log('contact.js:',chatRooms);
-    //       ctx2.setCurRoomUser(chatRooms[0]);
-    //     }
-    //   }
-    //     ,[chatRooms])
-    // useEffect(()=>
-    //   {
-    //     console.log(ctx2.curRoom)
-    //     if (ctx2.curRoom){
-    //       ctx2.pushMessage({content:'abc testing',time:Date.now()});
-    //     }
-    //   }
-    //     ,[])
-    // For testing --------------------------
-
-    
-    return (
-            
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <SafeAreaView style={styles.screen}>
-            <SectionList
-                sections={[{data:chatRooms}]}
-                renderItem={({ item, index }) => <ContactItem {...item} index={index} />}
-                // renderSectionHeader={({ section: { title } }) => (
-                //     <Text style={styles.heading}>{title}</Text>
-                //   )}
-                // onEndReachedThreshold={0.3}
-                // onEndReached={()=>{
-                //     setIsRefreshing(true);
-                //     dbCtx.fetchDeviceLog(15,()=>setIsRefreshing(false))
-                // }}
-                // onRefresh={()=>{
-                //     setIsRefreshing(true);
-                // }}
-                // refreshing={isRefreshing}
+export default function Contact(props) {
+  const dataCtx = useContext(DatabaseContext);
+  const data1=dataCtx.chatRooms;
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.screen}>
+        <Header navigation={props.navigation} />
+        <SectionList
+          sections={[{data: data1}]}
+          renderItem={({item, index}) => (
+            <ContactItem
+              {...item}
+              index={index}
+              navigation={props.navigation}
             />
           )}
           // renderSectionHeader={({ section: { title } }) => (

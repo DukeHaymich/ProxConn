@@ -1,9 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 // import publicIP from 'react-native-public-ip';
 // import DeviceInfo from 'react-native-device-info';
-// import firestore from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 // import { AuthContext } from './AuthProvider';
-import { db } from './firebase';
+// import { db } from './firebase';
+
+import { useSelector } from 'react-redux';
 
 /**
  * Structured of firestore is: collection->documents->collection->documents->....
@@ -35,12 +37,12 @@ export default function DatabaseProvider({ children }) {
     const [curRoom, setCurRoom] = useState(null);
     const [roomMessages, setRoomMessages] = useState([]);
 
-    const { user } = useContext(AuthContext);
-    const userId = user?.uid;
+    const authSession = useSelector((state) => state.authSession)
+    const userId = authSession.userToken?.uid;
   
     useEffect(() => {
-        if (userId==undefined) return;
-
+        if (userId==undefined || userId == null) return;
+        // console.log(userId);
         const userDB = firestore().collection('users').doc(userId);
 
         const subscriber = userDB.onSnapshot(documentSnapshot => {
@@ -49,13 +51,17 @@ export default function DatabaseProvider({ children }) {
         });
 
         const subcriber2= userDB.collection('chatSess').orderBy('lastActive','desc').limit(30).onSnapshot(querySnapshot => {
-                console.log('Total chat rooms: ', querySnapshot.size);
+                // console.log('Total chat rooms: ', querySnapshot.size);
                 const tmp=[];
                 querySnapshot.forEach(documentSnapshot => {
-                    const roomdata={...documentSnapshot.data(),roomName:documentSnapshot.id,roomRef:documentSnapshot.ref};
+                    const roomdata={
+                        ...documentSnapshot.data(),
+                        roomName: documentSnapshot.id,
+                        roomRef: documentSnapshot.ref
+                    };
                     tmp.push(roomdata)
                 });
-                console.log('chatRooms: ', tmp);
+                // console.log('chatRooms: ', tmp);
                 setChatRooms(tmp);
           });
         return () => {
@@ -70,15 +76,15 @@ export default function DatabaseProvider({ children }) {
         if (userId==undefined || curRoomUser==null) return;
 
         const subscriber = curRoomUser['roomID'].onSnapshot(documentSnapshot => {
-            console.log('Room data: ',documentSnapshot.data())
+            // console.log('Room data: ',documentSnapshot.data())
             setCurRoom(documentSnapshot.data());
         });
 
-        const subcriber2=curRoomUser['roomID'].collection('messages').orderBy('lastActive','desc').limit(30).onSnapshot(querySnapshot => {
-            console.log('Total message: ', querySnapshot.size);
+        const subcriber2=curRoomUser['roomID'].collection('messages').orderBy('time','desc').limit(20).onSnapshot(querySnapshot => {
+            // console.log('Total message: ', querySnapshot.size);
             const tmp=[];
             querySnapshot.forEach(documentSnapshot => {
-                console.log('Message: ', documentSnapshot.data());
+                // console.log('Message: ', documentSnapshot.data());
                 tmp.push(documentSnapshot.data());
             });
             setRoomMessages(tmp);
@@ -92,13 +98,11 @@ export default function DatabaseProvider({ children }) {
 
         
     function pushMessageHandler(mess) {
-        if (curRoom==null || userId==undefined) return;
-
+        if (curRoom==null || userId==null) return;
         const chatSessRef = curRoomUser['roomRef'];
         const newMessRef = curRoomUser['roomID'].collection('messages').doc();
-
+        
         const batch = firestore().batch();
-        console.log(chatSessRef)
         batch.update(chatSessRef,{'lastMess':mess.content,'lastActive':mess.time});
         batch.set(newMessRef,{'content':mess.content,'time':mess.time,'sender':userData.username});
 
