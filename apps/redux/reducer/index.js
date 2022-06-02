@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
+
+import keyboardFlag from './keyboardReducer';
 
 const reducers = combineReducers({
-    // add reducer here
+  keyboardFlag: keyboardFlag,
+  // add reducer here
 });
 
 export default (state, action) => reducers(state, action);
-

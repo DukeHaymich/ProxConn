@@ -10,6 +10,7 @@ import ContactStack from './ContactStack';
 import ProximityStack from './ProximityStack';
 import AccountStack from './AccountStack';
 import {colors} from '../script/color';
+// import {useSelector} from 'react-redux';
 // import { NavigationRouteContext } from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
 // const Tab = createMaterialBottomTabNavigator();
@@ -109,8 +110,10 @@ function MyTabBar({state, descriptors, navigation}) {
     }
     return true;
   };
-  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
+  // const keyboardFlag = useSelector(state => state.keyboardFlag);
+  // let keyboardStatus = keyboardFlag.flag;
+  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardStatus(true);

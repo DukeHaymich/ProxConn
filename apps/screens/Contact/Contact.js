@@ -14,6 +14,8 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import {TouchableOpacity} from 'react-native-gesture-handler';
+// import {useDispatch} from 'react-redux';
+// import {setFlag} from '../../redux/action/updateKeyboard';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import {colors} from '../../script/color';
@@ -31,7 +33,7 @@ function Header({navigation}) {
   // function goBack() {
   //     navigation.pop();
   // }
-
+  // const dispatch = useDispatch();
   return (
     <View style={styles.headerContainer}>
       <View style={styles.searchBar}>
@@ -44,8 +46,8 @@ function Header({navigation}) {
           // // returnKeyType='next'
           // // autoFocus={true}
           // // onSubmitEditing={() => {}}
-          // onFocus={() => {navigation.setOptions({tabBarStyle: {display: 'none'}});}}
-          // onBlur={onUsernameBlur}
+          // onFocus={() => dispatch(setFlag(true))}
+          // onBlur={() => dispatch(setFlag(false))}
           // onChangeText={(value) => setUsername(value)}
           // blurOnSubmit={false}
           // ref={refInputSearch}

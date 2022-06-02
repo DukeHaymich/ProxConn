@@ -6,19 +6,42 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
   Keyboard,
+  KeyboardEvent,
+  Dimensions,
   TextInput,
-  KeyboardAvoidingView,
   ScrollView,
+  FlatList,
+  SectionList,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import {useKeyboard} from '@react-native-community/hooks';
 
 import {Avatar} from '@rneui/base';
 
 import {colors} from '../../script/color';
+import Message from './Message';
 // import {ScrollView} from 'react-native-gesture-handler';
+
+// const messageList = [
+//   {
+//     userName: 'minh',
+//     time: '4:25',
+//     message: 'Hello mấy cưng'
+//   },
+//   {
+//     userName: 'sơn',
+//     time: '4:25',
+//     message: 'Hello mấy cưng'
+//   },
+//   {
+//     userName: 'minh',
+//     time: '4:25',
+//     message: 'yolooo'
+//   },
+// ];
 
 function Header(props) {
   // function goBack() {
@@ -145,12 +168,115 @@ function Footer() {
 }
 
 function MessageList() {
+  const [messages, setMessages] = useState([
+    {
+      user: 1,
+      time: '4:25',
+      content: 'Hello mấy cưng222',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'Hello mấy cưng1111',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'Hello mấy cưng222',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'Hello mấy cưng',
+    },
+    {
+      user: 1,
+      time: '4:25',
+      content: 'Hello mấy cưng',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 1,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 1,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+    {
+      user: 0,
+      time: '4:25',
+      content: 'yolooo',
+    },
+  ]);
+  const user = useRef(0);
+  // const scrollView = useRef();
   return (
-    <ScrollView style={{flexDirection: 'column'}}>
-      <Text style={{height: 300, backgroundColor: 'red'}}>haha</Text>
-      <Text style={{height: 300, backgroundColor: 'red'}}>huhu</Text>
-      <Text style={{height: 300, backgroundColor: 'red'}}>huhu</Text>
-    </ScrollView>
+    <SectionList
+      sections={[{data: messages}]}
+      inverted={true}
+      renderItem={({item, index}) => (
+        <Message
+          index={index}
+          time={item.time}
+          isLeft={item.user !== user.current}
+          message={item.content}
+        />
+      )}
+      // renderSectionHeader={({ section: { title } }) => (
+      //     <Text style={styles.heading}>{title}</Text>
+      //   )}
+      // onEndReachedThreshold={0.3}
+      // onEndReached={()=>{
+      //     setIsRefreshing(true);
+      //     dbCtx.fetchDeviceLog(15,()=>setIsRefreshing(false))
+      // }}
+      // onRefresh={()=>{
+      //     setIsRefreshing(true);
+      // }}
+      // refreshing={isRefreshing}
+    />
   );
 }
 
@@ -169,6 +295,7 @@ export default function Chat(props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    // height: 500,
     backgroundColor: 'white',
     // justifyContent: 'space-between',
   },
@@ -209,4 +336,6 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 30,
   },
+  chatContainer: {},
+  message: {},
 });
