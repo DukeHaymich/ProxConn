@@ -18,6 +18,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 // import {setFlag} from '../../redux/action/updateKeyboard';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
+import { AuthContext } from '../../stores/AuthProvider';
+import { DatabaseContext } from '../../stores/DatabaseProvider';
+
 import {colors} from '../../script/color';
 
 const data = [
@@ -97,51 +100,86 @@ function AvatarContact(props) {
 }
 
 function ContactItem(props) {
-  // console.log(Date.now())
-  // var time = new Date();
-  // time = time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear()
-  //     + "  " + time.toLocaleTimeString();
-  const navigation = props.navigation;
-  return (
-    <ListItem
-      Component={TouchableHighlight}
-      containerStyle={styles.cardContainer}
-      disabledStyle={{opacity: 0.5}}
-      onLongPress={() => console.log('onLongPress()')}
-      onPress={() =>
-        navigation.navigate('Chat', {userName: props.chatUser, ava: props.ava})
-      }
-      pad={20}>
-      <ListItem.Content style={styles.userInfo}>
-        <AvatarContact uri={props.ava} name={props.chatUser} />
-        <ListItem.Content style={styles.userContent}>
-          <ListItem.Content style={styles.userText}>
-            <Text style={styles.userName}>{props.chatUser}</Text>
-            <Text style={styles.postTime}> 4 mins ago </Text>
-          </ListItem.Content>
-          <ListItem.Content style={styles.messageText}>
-            <Text>
-              You: okay thay alskjdofjasodjfoiasjdoifjasoidjfoisadjoifjsdaoijoi
-            </Text>
-          </ListItem.Content>
+    return (
+        <ListItem
+        Component={TouchableHighlight}
+        containerStyle={{}}
+        disabledStyle={{ opacity: 0.5 }}
+        onLongPress={() => console.log("onLongPress()")}
+        onPress={() => console.log("onPress()")}
+        pad={20}
+      >
+        <AvatarContact uri={props.ava} name={props.roomName}
+        />
+        <ListItem.Content>
+          <ListItem.Title style={styles.textHeader}>
+            <Text>{props.roomName}</Text>
+          </ListItem.Title>
+          <ListItem.Subtitle>
+            <Text>{(props?.lastMess!=undefined)? props?.lastMess: "Tap here to say hi"}</Text>
+            <Text>{(props?.lastActive!=undefined)? props?.lastActive: "N/A"}</Text>
+          </ListItem.Subtitle>
         </ListItem.Content>
       </ListItem.Content>
     </ListItem>
   );
 }
 
-export default function Contact(props) {
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={styles.screen}>
-        <Header navigation={props.navigation} />
-        <SectionList
-          sections={[{data: data}]}
-          renderItem={({item, index}) => (
-            <ContactItem
-              {...item}
-              index={index}
-              navigation={props.navigation}
+
+export default function Contact() {
+
+  // For testing --------------------------
+    const ctx=useContext(AuthContext);
+    const ctx2=useContext(DatabaseContext);
+    const chatRooms = ctx2.chatRooms;
+    useEffect(()=>
+    {
+      if (ctx.user==null){
+        ctx.login('admin@gmail.com','sadasd').then(()=>{
+         console.log(ctx.user);
+        });
+      }
+    }
+      ,[])
+
+    // useEffect(()=>
+    //   {
+    //     if (chatRooms.length>0){
+    //       console.log('contact.js:',chatRooms);
+    //       ctx2.setCurRoomUser(chatRooms[0]);
+    //     }
+    //   }
+    //     ,[chatRooms])
+    // useEffect(()=>
+    //   {
+    //     console.log(ctx2.curRoom)
+    //     if (ctx2.curRoom){
+    //       ctx2.pushMessage({content:'abc testing',time:Date.now()});
+    //     }
+    //   }
+    //     ,[])
+    // For testing --------------------------
+
+    
+    return (
+            
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <SafeAreaView style={styles.screen}>
+            <SectionList
+                sections={[{data:chatRooms}]}
+                renderItem={({ item, index }) => <ContactItem {...item} index={index} />}
+                // renderSectionHeader={({ section: { title } }) => (
+                //     <Text style={styles.heading}>{title}</Text>
+                //   )}
+                // onEndReachedThreshold={0.3}
+                // onEndReached={()=>{
+                //     setIsRefreshing(true);
+                //     dbCtx.fetchDeviceLog(15,()=>setIsRefreshing(false))
+                // }}
+                // onRefresh={()=>{
+                //     setIsRefreshing(true);
+                // }}
+                // refreshing={isRefreshing}
             />
           )}
           // renderSectionHeader={({ section: { title } }) => (

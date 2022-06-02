@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1036410813586",
+    "firebase_url": "https://bk-prox-conn-default-rtdb.firebaseio.com",
     "project_id": "bk-prox-conn",
     "storage_bucket": "bk-prox-conn.appspot.com"
   },
