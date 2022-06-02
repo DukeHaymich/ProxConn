@@ -36,7 +36,7 @@ export default function Routes() {
     if (initializing) return null;
 
     return (
-        <AuthProvider>
+        // <AuthProvider>
         <DatabaseProvider>
         <NavigationContainer>
             { authSession.userToken
@@ -45,6 +45,6 @@ export default function Routes() {
             }
         </NavigationContainer>
         </DatabaseProvider>
-        </AuthProvider>
+        // </AuthProvider> 
     )
 }
